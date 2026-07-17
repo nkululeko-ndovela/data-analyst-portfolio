@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sales Performance — Analyst Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg: #0F1419;
+    --surface: #161D26;
+    --surface-line: #232C38;
+    --text: #E8ECEF;
+    --text-muted: #8B96A5;
+    --accent: #4FD1C5;
+    --accent-amber: #F5A623;
+    --radius: 10px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 40px 24px 80px; }
+
+  header.top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    border-bottom: 1px solid var(--surface-line);
+    padding-bottom: 20px;
+    margin-bottom: 28px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  header.top h1 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 26px;
+    margin: 0 0 4px;
+    letter-spacing: -0.01em;
+  }
+  header.top p { margin: 0; color: var(--text-muted); font-size: 13px; }
+  .tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    border: 1px solid rgba(79,209,197,0.35);
+    background: rgba(79,209,197,0.08);
+    padding: 5px 10px;
+    border-radius: 6px;
+    letter-spacing: 0.04em;
+  }
+
+  /* data-quality strip: the signature element — a ticker of what was cleaned upstream */
+  .dq-strip {
+    display: flex;
+    gap: 28px;
+    overflow-x: auto;
+    padding: 10px 16px;
+    background: var(--surface);
+    border: 1px solid var(--surface-line);
+    border-radius: var(--radius);
+    margin-bottom: 28px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
+  .dq-strip span.dot { color: var(--accent-amber); margin-right: 6px; }
+
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin-bottom: 28px;
+  }
+  .kpi-card {
+    background: var(--surface);
+    border: 1px solid var(--surface-line);
+    border-radius: var(--radius);
+    padding: 18px 18px 16px;
+  }
+  .kpi-card .label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+  }
+  .kpi-card .value {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 26px;
+    font-weight: 500;
+    color: var(--accent);
+  }
+  .kpi-card .value.amber { color: var(--accent-amber); }
+
+  .chart-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  .chart-grid.second { grid-template-columns: 1fr 1fr; }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--surface-line);
+    border-radius: var(--radius);
+    padding: 18px;
+  }
+  .card h3 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    margin: 0 0 14px;
+    color: var(--text);
+  }
+  .card .chart-wrap { position: relative; height: 260px; }
+
+  footer {
+    margin-top: 36px;
+    color: var(--text-muted);
+    font-size: 12px;
+    font-family: 'IBM Plex Mono', monospace;
+    border-top: 1px solid var(--surface-line);
+    padding-top: 16px;
+  }
+
+  @media (max-width: 860px) {
+    .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+    .chart-grid, .chart-grid.second { grid-template-columns: 1fr; }
+  }
+
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <div>
+      <h1>Sales Performance Dashboard</h1>
+      <p>Retail e-commerce &middot; 18-month rolling window &middot; refreshed from cleaned data mart</p>
+    </div>
+    <div class="tag">DATA SOURCE: VALIDATED</div>
+  </header>
+
+  <div class="dq-strip" id="dqStrip">
+    <span><span class="dot">&#9679;</span>75 duplicate rows removed at ingest</span>
+    <span><span class="dot">&#9679;</span>151 revenue values recomputed, not dropped</span>
+    <span><span class="dot">&#9679;</span>18 category spellings normalized to 6</span>
+    <span><span class="dot">&#9679;</span>1.1% of revenue flagged &ldquo;Unknown region&rdquo; for follow-up</span>
+  </div>
+
+  <div class="kpi-grid" id="kpiGrid"></div>
+
+  <div class="chart-grid">
+    <div class="card">
+      <h3>Monthly Revenue Trend</h3>
+      <div class="chart-wrap"><canvas id="monthlyChart"></canvas></div>
+    </div>
+    <div class="card">
+      <h3>Revenue Share by Channel</h3>
+      <div class="chart-wrap"><canvas id="channelChart"></canvas></div>
+    </div>
+  </div>
+
+  <div class="chart-grid second">
+    <div class="card">
+      <h3>Revenue by Category</h3>
+      <div class="chart-wrap"><canvas id="categoryChart"></canvas></div>
+    </div>
+    <div class="card">
+      <h3>Revenue by Region</h3>
+      <div class="chart-wrap"><canvas id="regionChart"></canvas></div>
+    </div>
+  </div>
+
+  <footer>
+    Built with Python (pandas) for aggregation + Chart.js for rendering &mdash;
+    see <code>prepare_dashboard_data.py</code> for the data pipeline behind this view.
+  </footer>
+
+</div>
+
+<script>
+const ACCENT = "#4FD1C5";
+const AMBER = "#F5A623";
+const MUTED = "#8B96A5";
+const PALETTE = ["#4FD1C5", "#F5A623", "#7C9CBF", "#E8ECEF", "#5A7A8C", "#C77B4F"];
+
+Chart.defaults.color = MUTED;
+Chart.defaults.font.family = "'Inter', sans-serif";
+Chart.defaults.borderColor = "#232C38";
+
+function fmtMoney(n) {
+  return "$" + Number(n).toLocaleString(undefined, {maximumFractionDigits: 0});
+}
+
+function animateValue(el, end, isMoney) {
+  const duration = 900;
+  const start = performance.now();
+  function tick(now) {
+    const progress = Math.min((now - start) / duration, 1);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    const current = end * eased;
+    el.textContent = isMoney ? fmtMoney(current) : Math.round(current).toLocaleString();
+    if (progress < 1) requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
+
+fetch('data/dashboard_data.json')
+  .then(r => r.json())
+  .then(data => {
+    const kpiGrid = document.getElementById('kpiGrid');
+    const kpis = [
+      { label: 'Total Revenue', value: data.kpis.total_revenue, money: true, amber: false },
+      { label: 'Total Orders', value: data.kpis.total_orders, money: false, amber: false },
+      { label: 'Avg Order Value', value: data.kpis.avg_order_value, money: true, amber: false },
+      { label: 'Top Category', text: data.kpis.top_category, amber: true },
+    ];
+    kpis.forEach(k => {
+      const card = document.createElement('div');
+      card.className = 'kpi-card';
+      const valueClass = k.amber ? 'value amber' : 'value';
+      card.innerHTML = `<div class="label">${k.label}</div><div class="${valueClass}">${k.text ? k.text : ''}</div>`;
+      kpiGrid.appendChild(card);
+      if (!k.text) animateValue(card.querySelector('.value'), k.value, k.money);
+    });
+
+    new Chart(document.getElementById('monthlyChart'), {
+      type: 'line',
+      data: {
+        labels: data.monthly.labels,
+        datasets: [{
+          label: 'Revenue',
+          data: data.monthly.values,
+          borderColor: ACCENT,
+          backgroundColor: 'rgba(79,209,197,0.12)',
+          fill: true,
+          tension: 0.3,
+          pointRadius: 2,
+        }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: { y: { ticks: { callback: v => fmtMoney(v) } } }
+      }
+    });
+
+    new Chart(document.getElementById('channelChart'), {
+      type: 'doughnut',
+      data: {
+        labels: data.channel.labels,
+        datasets: [{ data: data.channel.values, backgroundColor: PALETTE, borderColor: '#161D26', borderWidth: 2 }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { position: 'bottom', labels: { boxWidth: 10, padding: 12 } } }
+      }
+    });
+
+    new Chart(document.getElementById('categoryChart'), {
+      type: 'bar',
+      data: {
+        labels: data.category.labels,
+        datasets: [{ data: data.category.values, backgroundColor: ACCENT, borderRadius: 4 }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: { y: { ticks: { callback: v => fmtMoney(v) } } }
+      }
+    });
+
+    new Chart(document.getElementById('regionChart'), {
+      type: 'bar',
+      data: {
+        labels: data.region.labels,
+        datasets: [{ data: data.region.values, backgroundColor: AMBER, borderRadius: 4 }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        indexAxis: 'y',
+        plugins: { legend: { display: false } },
+        scales: { x: { ticks: { callback: v => fmtMoney(v) } } }
+      }
+    });
+  });
+</script>
+</body>
+</html>
