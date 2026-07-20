@@ -10,13 +10,13 @@ act on.
 A cleaned dataset is only useful once it's in front of the people making
 decisions. This project takes the validated sales data and builds an
 interactive dashboard a sales director could actually use in a Monday
-morning review — KPIs at a glance, trend over time, and a breakdown by
+morning review, KPIs at a glance, trend over time, and a breakdown by
 category, region, and channel.
 
 ## Approach
 
 - **Data pipeline**: `prepare_dashboard_data.py` (Python/pandas) aggregates
-  the cleaned transaction-level data into a compact JSON data mart — the
+  the cleaned transaction-level data into a compact JSON data mart. The
   dashboard never touches raw rows, the same separation of concerns you'd
   want in a real Power BI / Looker semantic layer.
 - **Front end**: `index.html` (Chart.js) renders KPI cards and four chart
@@ -24,7 +24,7 @@ category, region, and channel.
   styling, since this is the artifact a hiring manager actually looks at.
 - **Data-quality transparency**: a strip at the top of the dashboard
   surfaces exactly what was cleaned upstream (duplicates removed, values
-  recomputed, categories normalized) — a detail most dashboards hide, but
+  recomputed, categories normalized), a detail most dashboards hide, but
   one that builds trust with stakeholders reviewing the numbers.
 
 ## Results
@@ -46,7 +46,7 @@ category, region, and channel.
 ## Tech stack
 
 Python (pandas) for aggregation, HTML/CSS/JavaScript + Chart.js for the
-front end — no build step required.
+front end. No build step required.
 
 ## Run it yourself
 

@@ -1,9 +1,9 @@
-# SQL Portfolio — Retail Analytics
+# SQL Portfolio: Retail Analytics
 
 A standalone collection of well-commented, non-trivial SQL queries against
 a realistic 4-table retail schema (customers, products, orders,
-order_items — 200 customers, 40 products, 1,500 orders, ~3,700 line items),
-built to be skimmed quickly by anyone assessing SQL depth.
+order_items) with 200 customers, 40 products, 1,500 orders, and roughly
+3,700 line items, built to be skimmed quickly by anyone assessing SQL depth.
 
 ## Why this project exists
 
@@ -35,7 +35,7 @@ Category revenue breakdown from `01_joins_and_aggregation.sql`:
 | Sports | 260 | $282,269.99 | $1,085.65 |
 
 Customer spend segmentation from `03_ctes_customer_segmentation.sql` shows
-a clear tier split — top-spending third of customers account for
+a clear tier split. The top-spending third of customers account for
 $1,190,881 of lifetime spend versus $426,637 for the bottom third,
 useful for prioritizing retention efforts.
 
@@ -48,7 +48,7 @@ useful for prioritizing retention efforts.
 
 ## Tech stack
 
-SQL (SQLite dialect — window functions, CTEs, correlated subqueries),
+SQL (SQLite dialect, window functions, CTEs, correlated subqueries),
 Python for the runner script
 
 ## Run it yourself

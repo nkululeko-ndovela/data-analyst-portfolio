@@ -10,26 +10,26 @@ warehouse table.
 Daily batch pipelines fail in two ways: loudly (easy to fix) or silently
 (bad data quietly makes it into dashboards and nobody notices until a
 stakeholder asks why revenue looks wrong). This pipeline is built to
-fail loudly — quality thresholds are checked *before* transformation, so
+fail loudly. Quality thresholds are checked *before* transformation, so
 a genuinely broken batch stops the pipeline instead of getting "cleaned"
 into something that looks fine but isn't trustworthy.
 
 ## Approach
 
-1. **Extract** — read the daily CSV batch (`source_data/orders_raw.csv`)
-2. **Quality gate** — before transforming anything, check the batch
+1. **Extract**: read the daily CSV batch (`source_data/orders_raw.csv`)
+2. **Quality gate**: before transforming anything, check the batch
    against thresholds:
    - Null `amount` rate must stay under 5%
    - Negative `amount` rate must stay under 2%
    - If either threshold is breached, the pipeline raises and exits
-     non-zero — it does not proceed to load partial or suspect data
-3. **Transform** — normalize emails to lowercase, uppercase country
+     non-zero. It does not proceed to load partial or suspect data
+3. **Transform**: normalize emails to lowercase, uppercase country
    codes, cast and round amounts, drop row-level invalid records (with
    the count logged, not silently discarded)
-4. **Load** — idempotent upsert (`INSERT OR REPLACE`) keyed on
+4. **Load**: idempotent upsert (`INSERT OR REPLACE`) keyed on
    `order_id` into `warehouse.db`, so re-running the same batch after a
    failure is always safe and never creates duplicates
-5. **Orchestration** — `airflow_dag_example.py` shows how this same
+5. **Orchestration**: `airflow_dag_example.py` shows how this same
    pipeline would be wired into an Airflow DAG for daily 3 AM scheduling
    with retries and failure alerting, since a real production version of
    this wouldn't be triggered by hand

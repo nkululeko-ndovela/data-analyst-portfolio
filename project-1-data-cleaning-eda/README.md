@@ -13,7 +13,7 @@ quantity. None of this is usable for reporting until it's cleaned and validated.
 
 ## Approach
 
-1. **Audit first** — quantify every quality issue before touching the data (see console
+1. **Audit first**: quantify every quality issue before touching the data (see console
    output in `clean_and_analyze.py`), so the cleaning is justified, not guessed.
 2. **Clean without discarding data unnecessarily**:
    - Dropped 75 exact duplicate rows
@@ -44,8 +44,8 @@ quantity. None of this is usable for reporting until it's cleaned and validated.
 
 **Business insight flagged to stakeholders**: 1.12% of revenue is tied to orders with
 an unrecorded region, pointing to a data-capture gap at checkout in one of the source
-systems rather than an analysis error — the kind of finding that should go back to the
-engineering team, not just get buried in an "Unknown" bucket.
+systems rather than an analysis error. It's the kind of finding that should go back to
+the engineering team, not just get buried in an "Unknown" bucket.
 
 ## What I'd do at scale
 

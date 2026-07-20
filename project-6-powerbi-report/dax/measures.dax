@@ -1,0 +1,84 @@
+-- measures.dax
+--
+-- DAX measures for the regional sales report, written against the star
+-- schema in data_model.md. Paste these into a Power BI measure table
+-- (Modeling > New Measure) once fact_sales and the dimension tables are
+-- loaded and the relationships below are set up.
+--
+-- Requires dim_date to be marked as a Date Table (right-click dim_date
+-- in the Fields pane > Mark as Date Table > pick date_key) before the
+-- time intelligence measures will work.
+
+Total Revenue =
+SUMX (
+    fact_sales,
+    fact_sales[quantity] * fact_sales[unit_price]
+)
+
+Total Cost =
+SUMX (
+    fact_sales,
+    fact_sales[quantity] * fact_sales[unit_cost]
+)
+
+Total Profit =
+[Total Revenue] - [Total Cost]
+
+Profit Margin % =
+DIVIDE ( [Total Profit], [Total Revenue], 0 )
+
+Total Units Sold =
+SUM ( fact_sales[quantity] )
+
+Distinct Customers =
+DISTINCTCOUNT ( fact_sales[customer_key] )
+
+Average Order Value =
+DIVIDE ( [Total Revenue], DISTINCTCOUNT ( fact_sales[sale_id] ), 0 )
+
+-- Time intelligence: requires dim_date marked as a date table and
+-- related to fact_sales on date_key
+
+Revenue Prior Year =
+CALCULATE (
+    [Total Revenue],
+    SAMEPERIODLASTYEAR ( dim_date[date_key] )
+)
+
+Revenue YoY % =
+DIVIDE (
+    [Total Revenue] - [Revenue Prior Year],
+    [Revenue Prior Year],
+    0
+)
+
+Revenue Rolling 3M =
+CALCULATE (
+    [Total Revenue],
+    DATESINPERIOD (
+        dim_date[date_key],
+        LASTDATE ( dim_date[date_key] ),
+        -3,
+        MONTH
+    )
+)
+
+-- Ranking: which product is driving the most revenue within the current
+-- filter context (a slicer selection, a matrix row, etc.)
+
+Product Revenue Rank =
+RANKX (
+    ALL ( dim_product[product_name] ),
+    [Total Revenue],
+    ,
+    DESC
+)
+
+-- Segment-level share of total, used in the customer segment donut visual
+
+Revenue Share of Total % =
+DIVIDE (
+    [Total Revenue],
+    CALCULATE ( [Total Revenue], ALL ( dim_customer[customer_segment] ) ),
+    0
+)

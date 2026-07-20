@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sales Performance: Analyst Dashboard</title>
+<title>Regional Sales Report: Power BI Preview</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
@@ -27,7 +27,18 @@
   }
   .wrap { max-width: 1080px; margin: 0 auto; padding: clamp(24px, 5vw, 44px) clamp(16px, 4vw, 24px) 60px; }
 
-  header.top {
+  .note {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    color: var(--ink-muted);
+    border: 1px solid var(--rule);
+    background: var(--panel);
+    padding: 10px 14px;
+    margin-bottom: 26px;
+  }
+  .note strong { color: var(--ink); }
+
+  header {
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
@@ -37,13 +48,13 @@
     flex-wrap: wrap;
     gap: 10px;
   }
-  header.top h1 {
+  header h1 {
     font-family: 'IBM Plex Serif', serif;
     font-weight: 600;
     font-size: clamp(20px, 3.5vw, 26px);
     margin: 0 0 4px;
   }
-  header.top p { margin: 0; font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--ink-muted); }
+  header p { margin: 0; font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--ink-muted); }
   .badge {
     font-family: 'IBM Plex Mono', monospace;
     font-size: 11px;
@@ -53,24 +64,9 @@
     white-space: nowrap;
   }
 
-  .dq-strip {
-    display: flex;
-    gap: 24px;
-    overflow-x: auto;
-    padding: 10px 14px;
-    background: var(--panel);
-    border: 1px solid var(--rule);
-    margin-bottom: 22px;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 11.5px;
-    color: var(--ink-muted);
-    white-space: nowrap;
-  }
-  .dq-strip span.dot { color: var(--ochre); margin-right: 5px; }
-
   .kpi-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     gap: 1px;
     background: var(--rule);
     border: 1px solid var(--rule);
@@ -87,7 +83,7 @@
   }
   .kpi-card .value {
     font-family: 'IBM Plex Serif', serif;
-    font-size: clamp(17px, 2.4vw, 22px);
+    font-size: clamp(16px, 2.2vw, 21px);
     font-weight: 600;
     color: var(--indigo);
   }
@@ -95,7 +91,7 @@
 
   .chart-grid {
     display: grid;
-    grid-template-columns: 1.4fr 1fr;
+    grid-template-columns: 1.3fr 1fr;
     gap: 16px;
     margin-bottom: 16px;
   }
@@ -113,7 +109,7 @@
     color: var(--ink-muted);
     margin: 0 0 12px;
   }
-  .panel .chart-wrap { position: relative; height: 250px; }
+  .panel .chart-wrap { position: relative; height: 240px; }
 
   footer {
     font-family: 'IBM Plex Mono', monospace;
@@ -124,9 +120,7 @@
     margin-top: 30px;
   }
 
-  :focus-visible { outline: 2px solid var(--indigo); outline-offset: 2px; }
-
-  @media (max-width: 860px) {
+  @media (max-width: 700px) {
     .kpi-grid { grid-template-columns: repeat(2, 1fr); }
     .chart-grid, .chart-grid.second { grid-template-columns: 1fr; }
   }
@@ -135,48 +129,49 @@
 <body>
 <div class="wrap">
 
-  <header class="top">
-    <div>
-      <h1>Sales Performance Dashboard</h1>
-      <p>Retail e-commerce, 18-month rolling window, refreshed from cleaned data mart</p>
-    </div>
-    <div class="badge">DATA SOURCE: VALIDATED</div>
-  </header>
-
-  <div class="dq-strip" id="dqStrip">
-    <span><span class="dot">&#9679;</span>75 duplicate rows removed at ingest</span>
-    <span><span class="dot">&#9679;</span>151 revenue values recomputed, not dropped</span>
-    <span><span class="dot">&#9679;</span>18 category spellings normalized to 6</span>
-    <span><span class="dot">&#9679;</span>1.1% of revenue flagged Unknown region for follow-up</span>
+  <div class="note">
+    <strong>Static preview.</strong> This page renders the exact figures the Power BI
+    report would show, calculated from the same star schema and DAX logic
+    in <code>dax/measures.dax</code>. Power BI Desktop isn't available in the
+    environment this was built in, so this is a browser-based stand-in.
+    Load <code>data/*.csv</code> into Power BI Desktop and paste in the DAX
+    to get the real, interactive report with working slicers.
   </div>
+
+  <header>
+    <div>
+      <h1>Regional Sales Report</h1>
+      <p>Star schema: fact_sales + 4 dimensions &middot; South African Rand (ZAR)</p>
+    </div>
+    <div class="badge">ZAR</div>
+  </header>
 
   <div class="kpi-grid" id="kpiGrid"></div>
 
   <div class="chart-grid">
     <div class="panel">
-      <h3>Monthly Revenue Trend</h3>
-      <div class="chart-wrap"><canvas id="monthlyChart"></canvas></div>
+      <h3>Monthly Revenue, 2025 to Present</h3>
+      <div class="chart-wrap"><canvas id="monthChart"></canvas></div>
     </div>
     <div class="panel">
-      <h3>Revenue Share by Channel</h3>
-      <div class="chart-wrap"><canvas id="channelChart"></canvas></div>
+      <h3>Revenue by Customer Segment</h3>
+      <div class="chart-wrap"><canvas id="segmentChart"></canvas></div>
     </div>
   </div>
 
   <div class="chart-grid second">
     <div class="panel">
-      <h3>Revenue by Category</h3>
-      <div class="chart-wrap"><canvas id="categoryChart"></canvas></div>
-    </div>
-    <div class="panel">
       <h3>Revenue by Region</h3>
       <div class="chart-wrap"><canvas id="regionChart"></canvas></div>
+    </div>
+    <div class="panel">
+      <h3>Revenue by Category</h3>
+      <div class="chart-wrap"><canvas id="categoryChart"></canvas></div>
     </div>
   </div>
 
   <footer>
-    Built with Python (pandas) for aggregation and Chart.js for rendering.
-    See prepare_dashboard_data.py for the data pipeline behind this view.
+    Data model in data_model.md &middot; DAX measures in dax/measures.dax &middot; source CSVs in data/
   </footer>
 
 </div>
@@ -185,91 +180,63 @@
 const INDIGO = "#33415C";
 const OCHRE = "#A9762E";
 const MUTED = "#6B6F68";
-const PALETTE = ["#33415C", "#A9762E", "#7C9070", "#8A6D9B", "#B5544B", "#4F7C8C"];
+const PALETTE = ["#33415C", "#A9762E", "#7C9070", "#8A6D9B", "#B5544B"];
 
 Chart.defaults.color = MUTED;
 Chart.defaults.font.family = "'IBM Plex Sans', sans-serif";
 Chart.defaults.borderColor = "#D6D7CF";
 
-function fmtMoney(n) {
-  return "$" + Number(n).toLocaleString(undefined, {maximumFractionDigits: 0});
+function fmtRand(n) {
+  return "R" + Number(n).toLocaleString("en-ZA", {maximumFractionDigits: 0});
 }
 
-function animateValue(el, end, isMoney) {
-  const duration = 900;
-  const start = performance.now();
-  function tick(now) {
-    const progress = Math.min((now - start) / duration, 1);
-    const eased = 1 - Math.pow(1 - progress, 3);
-    const current = end * eased;
-    el.textContent = isMoney ? fmtMoney(current) : Math.round(current).toLocaleString();
-    if (progress < 1) requestAnimationFrame(tick);
-  }
-  requestAnimationFrame(tick);
-}
-
-fetch('data/dashboard_data.json')
+fetch('data/report_summary.json')
   .then(r => r.json())
   .then(data => {
     const kpiGrid = document.getElementById('kpiGrid');
     const kpis = [
-      { label: 'Total Revenue', value: data.kpis.total_revenue, money: true },
-      { label: 'Total Orders', value: data.kpis.total_orders, money: false },
-      { label: 'Avg Order Value', value: data.kpis.avg_order_value, money: true },
-      { label: 'Top Category', text: data.kpis.top_category, ochre: true },
+      { label: 'Total Revenue', value: fmtRand(data.kpis.total_revenue) },
+      { label: 'Total Profit', value: fmtRand(data.kpis.total_profit) },
+      { label: 'Profit Margin', value: data.kpis.margin_pct + '%', ochre: true },
+      { label: 'Customers', value: data.kpis.distinct_customers.toLocaleString() },
+      { label: 'YoY Growth (24 to 25)', value: data.yoy_growth_pct + '%', ochre: true },
     ];
     kpis.forEach(k => {
       const card = document.createElement('div');
       card.className = 'kpi-card';
-      const valueClass = k.ochre ? 'value ochre' : 'value';
-      card.innerHTML = `<div class="label">${k.label}</div><div class="${valueClass}">${k.text ? k.text : ''}</div>`;
+      card.innerHTML = `<div class="label">${k.label}</div><div class="value${k.ochre ? ' ochre' : ''}">${k.value}</div>`;
       kpiGrid.appendChild(card);
-      if (!k.text) animateValue(card.querySelector('.value'), k.value, k.money);
     });
 
-    new Chart(document.getElementById('monthlyChart'), {
+    new Chart(document.getElementById('monthChart'), {
       type: 'line',
       data: {
-        labels: data.monthly.labels,
+        labels: data.month.labels,
         datasets: [{
-          label: 'Revenue',
-          data: data.monthly.values,
+          data: data.month.values,
           borderColor: INDIGO,
           backgroundColor: 'rgba(51,65,92,0.08)',
           fill: true,
-          tension: 0.3,
+          tension: 0.25,
           pointRadius: 2,
         }]
       },
       options: {
         responsive: true, maintainAspectRatio: false,
         plugins: { legend: { display: false } },
-        scales: { y: { ticks: { callback: v => fmtMoney(v) } } }
+        scales: { y: { ticks: { callback: v => fmtRand(v) } } }
       }
     });
 
-    new Chart(document.getElementById('channelChart'), {
+    new Chart(document.getElementById('segmentChart'), {
       type: 'doughnut',
       data: {
-        labels: data.channel.labels,
-        datasets: [{ data: data.channel.values, backgroundColor: PALETTE, borderColor: '#F6F6F2', borderWidth: 2 }]
+        labels: data.segment.labels,
+        datasets: [{ data: data.segment.values, backgroundColor: PALETTE, borderColor: '#F6F6F2', borderWidth: 2 }]
       },
       options: {
         responsive: true, maintainAspectRatio: false,
-        plugins: { legend: { position: 'bottom', labels: { boxWidth: 10, padding: 12 } } }
-      }
-    });
-
-    new Chart(document.getElementById('categoryChart'), {
-      type: 'bar',
-      data: {
-        labels: data.category.labels,
-        datasets: [{ data: data.category.values, backgroundColor: INDIGO, borderRadius: 3 }]
-      },
-      options: {
-        responsive: true, maintainAspectRatio: false,
-        plugins: { legend: { display: false } },
-        scales: { y: { ticks: { callback: v => fmtMoney(v) } } }
+        plugins: { legend: { position: 'bottom', labels: { boxWidth: 10, padding: 10 } } }
       }
     });
 
@@ -277,13 +244,26 @@ fetch('data/dashboard_data.json')
       type: 'bar',
       data: {
         labels: data.region.labels,
-        datasets: [{ data: data.region.values, backgroundColor: OCHRE, borderRadius: 3 }]
+        datasets: [{ data: data.region.values, backgroundColor: INDIGO, borderRadius: 3 }]
       },
       options: {
         responsive: true, maintainAspectRatio: false,
         indexAxis: 'y',
         plugins: { legend: { display: false } },
-        scales: { x: { ticks: { callback: v => fmtMoney(v) } } }
+        scales: { x: { ticks: { callback: v => fmtRand(v) } } }
+      }
+    });
+
+    new Chart(document.getElementById('categoryChart'), {
+      type: 'bar',
+      data: {
+        labels: data.category.labels,
+        datasets: [{ data: data.category.values, backgroundColor: OCHRE, borderRadius: 3 }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: { y: { ticks: { callback: v => fmtRand(v) } } }
       }
     });
   });

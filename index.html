@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ndovela Nkululeko: Data Analyst &amp; Data Specialist</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F6F6F2;
+    --panel: #EDEDE7;
+    --ink: #1C1F1D;
+    --ink-muted: #6B6F68;
+    --rule: #D6D7CF;
+    --indigo: #33415C;
+    --ochre: #A9762E;
+    --max: 880px;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'IBM Plex Sans', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    font-size: 15px;
+    line-height: 1.55;
+  }
+  a { color: var(--indigo); }
+  .wrap { max-width: var(--max); margin: 0 auto; padding: clamp(28px, 6vw, 60px) clamp(18px, 5vw, 24px) 60px; }
+
+  /* masthead */
+  header.masthead {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    border-bottom: 2px solid var(--ink);
+    padding-bottom: 22px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+  }
+  header.masthead h1 {
+    font-family: 'IBM Plex Serif', serif;
+    font-weight: 600;
+    font-size: clamp(28px, 5vw, 40px);
+    margin: 0 0 6px;
+    letter-spacing: -0.01em;
+  }
+  header.masthead .role {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    color: var(--indigo);
+    letter-spacing: 0.01em;
+  }
+  .status-badge {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    color: var(--ochre);
+    border: 1px solid var(--ochre);
+    padding: 4px 9px;
+    white-space: nowrap;
+    align-self: flex-start;
+  }
+  .status-badge::before { content: "\25CF "; }
+
+  .contact-line {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 18px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12.5px;
+    color: var(--ink-muted);
+    margin-bottom: 40px;
+  }
+  .contact-line a { color: var(--ink-muted); text-decoration: none; border-bottom: 1px solid var(--rule); }
+  .contact-line a:hover { color: var(--indigo); border-color: var(--indigo); }
+
+  section { margin-bottom: 44px; }
+  .section-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--ink-muted);
+    margin-bottom: 14px;
+  }
+  .section-label::before { content: "// "; color: var(--rule); }
+
+  .about p { max-width: 62ch; color: var(--ink); font-size: 15px; }
+
+  /* skills table */
+  .skills-table { border-top: 1px solid var(--rule); }
+  .skill-row {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 10px 20px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .skill-row .k {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--ochre);
+    padding-top: 2px;
+  }
+  .skill-row .v { color: var(--ink); }
+
+  /* projects: schema-table signature element */
+  .schema-note {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    color: var(--ink-muted);
+    margin-bottom: 10px;
+  }
+  .schema-table { border: 1px solid var(--ink); }
+  .schema-head, .row {
+    display: grid;
+    grid-template-columns: 48px 1.4fr 1.1fr 110px;
+    gap: 12px;
+    align-items: center;
+  }
+  .schema-head {
+    background: var(--ink);
+    color: var(--paper);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 9px 14px;
+  }
+  a.row {
+    padding: 13px 14px;
+    text-decoration: none;
+    color: var(--ink);
+    border-bottom: 1px solid var(--rule);
+    background: var(--paper);
+    transition: background 0.12s ease;
+  }
+  a.row:nth-child(even) { background: var(--panel); }
+  a.row:hover { background: #E4E7DD; }
+  a.row:last-child { border-bottom: none; }
+  .row .id { font-family: 'IBM Plex Mono', monospace; color: var(--ink-muted); font-size: 13px; }
+  .row .name { font-family: 'IBM Plex Serif', serif; font-weight: 500; font-size: 15px; }
+  .row .name .desc { display: block; font-family: 'IBM Plex Sans', sans-serif; font-weight: 400; font-size: 12.5px; color: var(--ink-muted); margin-top: 3px; }
+  .row .stack { font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--ink-muted); }
+  .row .status { font-family: 'IBM Plex Mono', monospace; font-size: 11px; }
+  .row .status.done { color: #4B7A4E; }
+  .cell-label { display: none; }
+
+  /* experience changelog */
+  .exp-item {
+    display: grid;
+    grid-template-columns: 130px 1fr;
+    gap: 6px 24px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .exp-item:first-child { border-top: 1px solid var(--rule); }
+  .exp-item .when {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--ink-muted);
+    padding-top: 3px;
+  }
+  .exp-item .what .role-title {
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 15.5px;
+    font-weight: 600;
+    margin-bottom: 2px;
+  }
+  .exp-item .what .org {
+    font-size: 13px;
+    color: var(--ink-muted);
+    margin-bottom: 10px;
+  }
+  .exp-item .what ul { margin: 0; padding-left: 18px; font-size: 13.5px; color: var(--ink); line-height: 1.65; }
+  .exp-item .what li { margin-bottom: 4px; }
+
+  /* certifications */
+  .cert-list { border-top: 1px solid var(--rule); }
+  .cert-row {
+    display: grid;
+    grid-template-columns: 1fr 110px;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--rule);
+    font-size: 13.5px;
+  }
+  .cert-row .date { font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--ink-muted); text-align: right; }
+
+  footer {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    color: var(--ink-muted);
+    border-top: 1px solid var(--rule);
+    padding-top: 16px;
+  }
+
+  :focus-visible { outline: 2px solid var(--indigo); outline-offset: 2px; }
+
+  /* responsive: collapse schema-table, skills, experience, certs to stacked rows */
+  @media (max-width: 640px) {
+    .schema-head { display: none; }
+    a.row {
+      grid-template-columns: 1fr;
+      gap: 4px;
+    }
+    .row .id { order: 1; }
+    .row .name { order: 2; }
+    .row .stack { order: 3; }
+    .row .status { order: 4; }
+    .cell-label {
+      display: inline-block;
+      width: 62px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10.5px;
+      color: var(--ink-muted);
+      text-transform: uppercase;
+    }
+    .skill-row { grid-template-columns: 1fr; gap: 2px; }
+    .exp-item { grid-template-columns: 1fr; }
+    .exp-item .when { padding-top: 0; margin-bottom: 4px; }
+    .cert-row { grid-template-columns: 1fr; gap: 2px; }
+    .cert-row .date { text-align: left; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    a.row { transition: none; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="masthead">
+    <div>
+      <h1>Ndovela Nkululeko</h1>
+      <div class="role">data analyst / data specialist / data migration</div>
+    </div>
+    <div class="status-badge">OPEN TO REMOTE ROLES</div>
+  </header>
+
+  <div class="contact-line">
+    <span>Gauteng, Sandton, ZA</span>
+    <a href="mailto:ndovelankululekoree1@gmail.com">ndovelankululekoree1@gmail.com</a>
+    <a href="https://linkedin.com/in/nkululekondovela/" target="_blank" rel="noopener">linkedin.com/in/nkululekondovela</a>
+    <a href="https://github.com/nkululeko-ndovela/data-analyst-portfolio" target="_blank" rel="noopener">source on github</a>
+  </div>
+
+  <section class="about">
+    <div class="section-label">about</div>
+    <p>
+      I clean up datasets nobody trusts yet, build dashboards people actually open
+      on a Monday morning, and move data between systems without losing a row.
+      Four years across analytics and data specialist roles in Sandton and
+      Pretoria, an Azure Associate certification, and a habit of writing SQL
+      that the next person can read without asking me what it does.
+    </p>
+  </section>
+
+  <section>
+    <div class="section-label">skills</div>
+    <div class="skills-table">
+      <div class="skill-row"><div class="k">analysis and reporting</div><div class="v">SQL, Power BI, Tableau, Excel</div></div>
+      <div class="skill-row"><div class="k">etl and engineering</div><div class="v">Talend, SSIS, Python</div></div>
+      <div class="skill-row"><div class="k">cloud</div><div class="v">Amazon S3, Redshift, Microsoft Azure</div></div>
+      <div class="skill-row"><div class="k">databases</div><div class="v">PostgreSQL, SQL Server, MySQL</div></div>
+      <div class="skill-row"><div class="k">programming</div><div class="v">Python, Django</div></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-label">projects</div>
+    <div class="schema-note">select * from portfolio.projects order by id;</div>
+    <div class="schema-table">
+      <div class="schema-head">
+        <div>id</div><div>project</div><div>stack</div><div>status</div>
+      </div>
+
+      <a class="row" href="./project-1-data-cleaning-eda/">
+        <div class="id"><span class="cell-label">id</span>01</div>
+        <div class="name"><span class="cell-label">project</span>Data Cleaning and EDA
+          <span class="desc">5,000-row messy sales export turned into a validated dataset and insights</span>
+        </div>
+        <div class="stack"><span class="cell-label">stack</span>python, pandas</div>
+        <div class="status done"><span class="cell-label">status</span>complete</div>
+      </a>
+
+      <a class="row" href="./project-2-sales-dashboard/">
+        <div class="id"><span class="cell-label">id</span>02</div>
+        <div class="name"><span class="cell-label">project</span>Sales Dashboard
+          <span class="desc">Interactive KPI and trend view built on top of the cleaned data</span>
+        </div>
+        <div class="stack"><span class="cell-label">stack</span>python, chart.js</div>
+        <div class="status done"><span class="cell-label">status</span>complete</div>
+      </a>
+
+      <a class="row" href="./project-3-cloud-migration/">
+        <div class="id"><span class="cell-label">id</span>03</div>
+        <div class="name"><span class="cell-label">project</span>Legacy to Cloud Migration
+          <span class="desc">Denormalized system migrated with a 6-check validation gate</span>
+        </div>
+        <div class="stack"><span class="cell-label">stack</span>python, sql</div>
+        <div class="status done"><span class="cell-label">status</span>complete</div>
+      </a>
+
+      <a class="row" href="./project-4-etl-pipeline/">
+        <div class="id"><span class="cell-label">id</span>04</div>
+        <div class="name"><span class="cell-label">project</span>Daily ETL Pipeline
+          <span class="desc">Quality-gated, idempotent load with Airflow orchestration</span>
+        </div>
+        <div class="stack"><span class="cell-label">stack</span>python, airflow</div>
+        <div class="status done"><span class="cell-label">status</span>complete</div>
+      </a>
+
+      <a class="row" href="./project-5-sql-portfolio/">
+        <div class="id"><span class="cell-label">id</span>05</div>
+        <div class="name"><span class="cell-label">project</span>SQL Portfolio
+          <span class="desc">Joins, window functions, CTEs, and subqueries on real data</span>
+        </div>
+        <div class="stack"><span class="cell-label">stack</span>sql, sqlite</div>
+        <div class="status done"><span class="cell-label">status</span>complete</div>
+      </a>
+
+      <a class="row" href="./project-6-powerbi-report/">
+        <div class="id"><span class="cell-label">id</span>06</div>
+        <div class="name"><span class="cell-label">project</span>Power BI Regional Sales Report
+          <span class="desc">Star schema, DAX measures, and a ZAR revenue report by region and segment</span>
+        </div>
+        <div class="stack"><span class="cell-label">stack</span>power bi, dax</div>
+        <div class="status done"><span class="cell-label">status</span>complete</div>
+      </a>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-label">experience</div>
+
+    <div class="exp-item">
+      <div class="when">2022 to present</div>
+      <div class="what">
+        <div class="role-title">Data Analyst and Data Specialist</div>
+        <div class="org">QI Solutions (Pty) Ltd, Sandton</div>
+        <ul>
+          <li>Designed ETL pipelines to extract, clean, and transform data from multiple sources</li>
+          <li>Built Power BI and Tableau dashboards used for weekly business reporting</li>
+          <li>Wrote SQL for extraction, transformation, and analysis supporting BI efforts</li>
+          <li>Migrated legacy databases to modern systems with minimal disruption</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="exp-item">
+      <div class="when">2021 to 2022</div>
+      <div class="what">
+        <div class="role-title">Data Specialist</div>
+        <div class="org">Digititan (Pty) Ltd, Pretoria</div>
+        <ul>
+          <li>Interpreted data and analyzed results using statistical techniques</li>
+          <li>Acquired and maintained data from primary and secondary sources</li>
+          <li>Maintained database security, integrity, and system availability</li>
+          <li>Worked across MySQL, PostgreSQL, SQL Server, and pgAdmin on a PwC engagement</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-label">certifications</div>
+    <div class="cert-list">
+      <div class="cert-row"><div>Microsoft Azure Associate, Microsoft</div><div class="date">Jun 2023</div></div>
+      <div class="cert-row"><div>Power BI for Business Intelligence, Microsoft</div><div class="date">Jun 2024</div></div>
+      <div class="cert-row"><div>Azure for Data Engineering, Coursera</div><div class="date">May 2022</div></div>
+      <div class="cert-row"><div>Programming for Everybody (Python), Coursera</div><div class="date">2022</div></div>
+    </div>
+  </section>
+
+  <footer>
+    Standard Bank IT Impact Challenge, Hackathon Winner, 2018. Full history in EXPERIENCE.md
+  </footer>
+
+</div>
+</body>
+</html>
