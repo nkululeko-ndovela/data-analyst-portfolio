@@ -222,7 +222,7 @@ fetch('data/dashboard_data.json')
       const card = document.createElement('div');
       card.className = 'kpi-card';
       const valueClass = k.ochre ? 'value ochre' : 'value';
-      card.innerHTML = `<div class="label">R{k.label}</div><div class="R{valueClass}">R{k.text ? k.text : ''}</div>`;
+      card.innerHTML = `<div class="label">${k.label}</div><div class="${valueClass}">${k.text ? k.text : ''}</div>`;
       kpiGrid.appendChild(card);
       if (!k.text) animateValue(card.querySelector('.value'), k.value, k.money);
     });
