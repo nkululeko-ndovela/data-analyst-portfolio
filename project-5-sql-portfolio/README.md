@@ -28,15 +28,15 @@ Category revenue breakdown from `01_joins_and_aggregation.sql`:
 
 | Category | Orders | Revenue | Avg Order Value |
 |---|---|---|---|
-| Electronics | 817 | $804,976.42 | $985.28 |
-| Apparel | 731 | $504,401.83 | $690.02 |
-| Beauty | 666 | $444,264.35 | $667.06 |
-| Home & Kitchen | 491 | $346,721.61 | $706.15 |
-| Sports | 260 | $282,269.99 | $1,085.65 |
+| Electronics | 817 | R804,976.42 | R985.28 |
+| Apparel | 731 | R504,401.83 | R690.02 |
+| Beauty | 666 | R444,264.35 | R667.06 |
+| Home & Kitchen | 491 | R346,721.61 | R706.15 |
+| Sports | 260 | R282,269.99 | R1,085.65 |
 
 Customer spend segmentation from `03_ctes_customer_segmentation.sql` shows
 a clear tier split. The top-spending third of customers account for
-$1,190,881 of lifetime spend versus $426,637 for the bottom third,
+R1,190,881 of lifetime spend versus R426,637 for the bottom third,
 useful for prioritizing retention efforts.
 
 ## What I'd do at scale

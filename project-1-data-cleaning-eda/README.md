@@ -32,10 +32,10 @@ quantity. None of this is usable for reporting until it's cleaned and validated.
 
 | Metric | Value |
 |---|---|
-| Total revenue analyzed | $4,965,571.57 |
-| Top-performing category | Beauty ($870,115.39) |
-| Top-performing region | West ($1,048,884.03) |
-| Best month | March 2025 ($329,207.37) |
+| Total revenue analyzed | R4,965,571.57 |
+| Top-performing category | Beauty (R870,115.39) |
+| Top-performing region | West (R1,048,884.03) |
+| Best month | March 2025 (R329,207.37) |
 
 ![Monthly Revenue Trend](images/monthly_revenue_trend.png)
 ![Revenue by Category](images/revenue_by_category.png)

@@ -38,7 +38,7 @@ dst_revenue = dst.execute("""
     SELECT ROUND(SUM(unit_price * quantity), 2) FROM orders
 """).fetchone()[0]
 check("Aggregate revenue matches pre/post migration", src_revenue == dst_revenue,
-      f"source=${src_revenue:,.2f}, target=${dst_revenue:,.2f}")
+      f"source=R{src_revenue:,.2f}, target=R{dst_revenue:,.2f}")
 
 # 3. No orphaned foreign keys: every order must reference a valid customer and product
 orphan_customers = dst.execute("""

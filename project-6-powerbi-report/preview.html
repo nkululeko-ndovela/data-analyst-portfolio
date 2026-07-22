@@ -204,7 +204,7 @@ fetch('data/report_summary.json')
     kpis.forEach(k => {
       const card = document.createElement('div');
       card.className = 'kpi-card';
-      card.innerHTML = `<div class="label">${k.label}</div><div class="value${k.ochre ? ' ochre' : ''}">${k.value}</div>`;
+      card.innerHTML = `<div class="label">R{k.label}</div><div class="valueR{k.ochre ? ' ochre' : ''}">R{k.value}</div>`;
       kpiGrid.appendChild(card);
     });
 

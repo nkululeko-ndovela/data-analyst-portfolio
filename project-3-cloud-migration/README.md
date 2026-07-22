@@ -51,7 +51,7 @@ All 6 validation checks passed on this run:
 
 ```
 [PASS] Row count reconciliation (orders) -- source=4000, target=4000
-[PASS] Aggregate revenue matches pre/post migration -- source=$1,023,732.37, target=$1,023,732.37
+[PASS] Aggregate revenue matches pre/post migration -- source=R1,023,732.37, target=R1,023,732.37
 [PASS] No orders with orphaned customer_id -- orphans=0
 [PASS] No orders with orphaned product_id -- orphans=0
 [PASS] Customer deduplication correct -- source unique emails=300, target customers=300
